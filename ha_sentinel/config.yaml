@@ -1,5 +1,5 @@
 name: "HA Sentinel"
-version: "0.5.0"
+version: "0.5.1"
 slug: "ha_sentinel"
 description: "Lokaler KI-Hausanalyst und sicherer Telegram-Steuerbot für Home Assistant"
 url: "https://github.com/lybserv2/ha-sentinel"
@@ -22,6 +22,9 @@ options:
   request_timeout: 120
   notify_every_run: true
   notify_service: ""
+  history_limit: 12
+  status_cache_seconds: 180
+  notification_cooldown_seconds: 120
   telegram_enabled: false
   telegram_bot_token: ""
   telegram_chat_id: ""
@@ -38,6 +41,9 @@ schema:
   request_timeout: int(10,300)
   notify_every_run: bool
   notify_service: str?
+  history_limit: int(1,50)
+  status_cache_seconds: int(30,1800)
+  notification_cooldown_seconds: int(0,3600)
   telegram_enabled: bool
   telegram_bot_token: password?
   telegram_chat_id: str?
