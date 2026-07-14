@@ -1,0 +1,25 @@
+name: Validate Home Assistant add-on
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Python syntax
+        run: python3 -m py_compile ha_sentinel/rootfs/app/ha_sentinel.py
+      - name: Check for private Tailscale addresses
+        run: |
+          if grep -RInE '100\.(6[4-9]|[789][0-9]|1[01][0-9]|12[0-7])\.' --exclude-dir=.git .; then
+            echo 'Private Tailscale address found in repository'
+            exit 1
+          fi
+      - name: Check required repository files
+        run: |
+          test -f repository.yaml
+          test -f ha_sentinel/config.yaml
+          test -f ha_sentinel/Dockerfile
+          test -f ha_sentinel/build.yaml
