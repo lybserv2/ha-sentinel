@@ -1,0 +1,49 @@
+name: "HA Sentinel"
+version: "0.5.0"
+slug: "ha_sentinel"
+description: "Lokaler KI-Hausanalyst und sicherer Telegram-Steuerbot für Home Assistant"
+url: "https://github.com/lybserv2/ha-sentinel"
+arch:
+  - aarch64
+  - amd64
+  - armv7
+startup: application
+boot: auto
+init: false
+host_network: true
+homeassistant_api: true
+hassio_api: true
+map:
+  - addon_config:rw
+options:
+  lm_studio_url: "http://lm-studio-host:1234/v1/chat/completions"
+  model: "qwen3-8b-mlx"
+  interval_seconds: 300
+  request_timeout: 120
+  notify_every_run: true
+  notify_service: ""
+  telegram_enabled: false
+  telegram_bot_token: ""
+  telegram_chat_id: ""
+  telegram_disable_notification: false
+  telegram_control_enabled: true
+  telegram_poll_timeout: 20
+  climate_switch_entity: "switch.klimaanlage"
+  climate_entity: "climate.152832117768500_climate"
+  floor_lamp_entity: "switch.stehlampe"
+schema:
+  lm_studio_url: url
+  model: str
+  interval_seconds: int(30,)
+  request_timeout: int(10,300)
+  notify_every_run: bool
+  notify_service: str?
+  telegram_enabled: bool
+  telegram_bot_token: password?
+  telegram_chat_id: str?
+  telegram_disable_notification: bool
+  telegram_control_enabled: bool
+  telegram_poll_timeout: int(5,50)
+  climate_switch_entity: str
+  climate_entity: str
+  floor_lamp_entity: str
