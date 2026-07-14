@@ -16,8 +16,7 @@ GROUPS={'Klima':[CLIMATE,CSW,'sensor.klimaanlage_energy_power','sensor.temperatu
 KEEP=('friendly_name','unit_of_measurement','device_class','current_temperature','temperature','fan_mode','hvac_action','battery_level','percentage')
 
 def log(x): print(f'[{datetime.now().astimezone().isoformat(timespec="seconds")}] {x}',flush=True)
-def stop(*_):
- global RUN; RUN=False
+def stop(*_): raise SystemExit(0)
 signal.signal(signal.SIGTERM,stop); signal.signal(signal.SIGINT,stop)
 def headers(): return {'Authorization':f'Bearer {TOKEN}','Content-Type':'application/json'}
 def state(e):
