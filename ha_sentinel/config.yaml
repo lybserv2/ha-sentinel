@@ -1,5 +1,5 @@
 name: "HA Sentinel"
-version: "0.5.1"
+version: "0.5.2"
 slug: "ha_sentinel"
 description: "Lokaler KI-Hausanalyst und sicherer Telegram-Steuerbot für Home Assistant"
 url: "https://github.com/lybserv2/ha-sentinel"
