@@ -1,2 +1,2 @@
 #!/usr/bin/with-contenv bashio
-exec python3 /app/ha_sentinel.py
+exec python3 /app/sentinel_main.py
