@@ -3,6 +3,7 @@ from collections import deque
 from datetime import datetime
 import requests
 from sentinel_config import *
+from sentinel_rules import prompt_rules
 
 def clean(t):
  t=re.sub(r'<think>.*?</think>','',t or '',flags=re.I|re.S); t=re.sub(r'[*_`#]+','',t); t=re.sub(r'^\s*[-•]+\s*','',t,flags=re.M); return ' '.join(t.split()).strip()
@@ -11,7 +12,7 @@ def llm(s,q='Nenne ausschließlich wichtige Auffälligkeiten. Antworte mit maxim
  rules=('/no_think\nDu bist ein technischer Smart-Home-Analyst. Nutze nur den kompakten aktuellen Snapshot. '
         f'Der verbindliche Klimamodus ist {mode}. Erfinde keine Werte. Im Modus cool sind 1200-1800 W plausibel, über 2500 W auffällig. '
         'Im Modus fan_only sind 30-100 W plausibel. FRITZ!Box 80-89 °C erhöht, ab 90 °C kritisch. Datenträger unter 80 % ist unkritisch. '
-        'Gib nur echte Hinweise aus; wenn alles unauffällig ist, antworte exakt: Keine Auffälligkeiten.')
+        'Gib nur echte Hinweise aus; wenn alles unauffällig ist, antworte exakt: Keine Auffälligkeiten.'+prompt_rules())
  p={'model':MODEL,'messages':[{'role':'system','content':rules},{'role':'user','content':json.dumps({'frage':q,'snapshot':s},ensure_ascii=False,separators=(',',':'))}], 'temperature':0.1,'max_tokens':220,'stream':False}
  with LLM_LOCK:
   r=requests.post(LM,json=p,timeout=TIMEOUT); r.raise_for_status(); body=r.json()
@@ -49,6 +50,8 @@ def cached_dashboard():
  with CACHE_LOCK:
   if LAST['dashboard'] and time.time()-LAST['analyzed_at']<=STATUS_CACHE_SECONDS:return LAST['dashboard']
  return analyze(False)[3]
+def invalidate_cache():
+ with CACHE_LOCK: LAST.update(snapshot_hash=None,analysis=None,dashboard=None,analyzed_at=0.0)
 def write_history(h,a):
  entries=deque(maxlen=max(1,HISTORY_LIMIT))
  if HIST.exists():
