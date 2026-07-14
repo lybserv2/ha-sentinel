@@ -1,0 +1,16 @@
+# Secrets and local configuration
+options.json
+*.env
+.env*
+*.log
+*.jsonl
+telegram_offset.txt
+
+# Python
+__pycache__/
+*.py[cod]
+
+# macOS / editors
+.DS_Store
+.vscode/
+.idea/
