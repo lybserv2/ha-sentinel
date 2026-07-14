@@ -3,7 +3,8 @@ from datetime import datetime
 import requests
 from sentinel_config import *
 from sentinel_ai import analyze, write_history
-from sentinel_telegram import poll, send
+from sentinel_telegram_052 import poll
+from sentinel_telegram import send
 
 def publish(text,h,analysis):
  now=time.time()
@@ -32,5 +33,5 @@ def monitor():
    time.sleep(1)
 def main():
  if not TOKEN:raise RuntimeError('SUPERVISOR_TOKEN fehlt')
- log('HA Sentinel 0.5.1 startet'); threading.Thread(target=poll,daemon=True).start(); monitor()
+ log('HA Sentinel 0.5.2 startet'); threading.Thread(target=poll,daemon=True).start(); monitor()
 if __name__=='__main__':main()
